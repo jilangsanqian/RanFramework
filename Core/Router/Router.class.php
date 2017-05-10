@@ -38,8 +38,8 @@ class Router {
             $this->method = defultMethod;
             return false;
         }
-        $this->className = $params[0];
-        $this->method = $params[1];
+        $this->className =  $params[0];
+        $this->method = isset($params[1]) && $params[1] ? $params[1] : defultMethod;
     }
 
     private function checkControllerPath() {

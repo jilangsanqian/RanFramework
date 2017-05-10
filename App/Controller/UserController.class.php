@@ -20,7 +20,7 @@ class UserController extends RanController
 
     public function checkUser()
     {
-        var_dump(self::$app);
+        var_dump($this->Router->method);
        
     }
 
