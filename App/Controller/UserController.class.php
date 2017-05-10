@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Controller;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -11,6 +13,15 @@
  *
  * @author ranhai
  */
-class UserController {
-    //put your code here
+use Core\RanController;
+
+class UserController extends RanController
+{
+
+    public function checkUser()
+    {
+        var_dump(self::$app);
+       
+    }
+
 }

@@ -8,22 +8,30 @@ namespace Core;
  *
  * @author ranhai
  */
-require __DIR__ . '/Bootstrap/Application.class.php';
-//set_include_path($new_include_path)
+require __DIR__ . '/Bootstrap/di.class.php';
+use Core\Dispatch;
+//注入容器
+class app
+{
 
-$application = new \Core\Bootstrap\Application(__DIR__);
-$application->bind('Dispath', function($application,$moduleName){
-    return new \Core\Dispath($application->make($moduleName));
-});
-$application->bind('Router', function($application){
-    return new \Core\Router\Router();
-});
-$superman_1 = $application->make('Dispath', ['Router']);
-//(new Autoload\Autoload())->dd();
+    protected $di;
 
-/*
-$components = [
-    'Request', // 'Response', 'Router', 'Session', 'Log', 'Eloquent', 'Cache'
-];
-$application->register($components);
-*/
+    function __construct($di)
+    {
+        $this->di = $di;
+    }
+
+    function task($name)
+    {
+        return $this->di->get($name);
+    }
+
+}
+
+$di = new \Core\Bootstrap\di();
+$di->set('Router', function() {
+    return new Router\Router();
+});
+$app = new app($di);
+//$app->task('dg');
+(new Dispatch($app))->send();

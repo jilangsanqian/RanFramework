@@ -9,9 +9,9 @@ namespace Core\Router;
  */
 class Router {
 
-    private $pathInfo; //请求路径
-    private $className;
-    private $method;
+    public $pathInfo; //请求路径
+    public $className;
+    public $method;
 
     public function __construct() {
         $queryString = $_SERVER['REQUEST_URI'];
@@ -30,21 +30,25 @@ class Router {
 
     private function pathExplode() {
         if (!$this->pathInfo) {
-            exit('路径错误');
+            exit('path info error');
         }
-        $params = explode('/', $this->pathInfo);
-        $num = count($params);
-        $this->className = $params[$num - 1];
-        $this->method = $params[$num - 2];
+        $params = array_filter(explode('/', trim($this->pathInfo,'/')));
+        if(empty($params)){
+            $this->className = defultController;
+            $this->method = defultMethod;
+            return false;
+        }
+        $this->className = $params[0];
+        $this->method = $params[1];
     }
 
     private function checkControllerPath() {
         if (!$this->className) {
-            die($this->className . 'Controller不存在');
+            die($this->className . ' Controller not exists');
         }
         $controllerPath = __APP__ . '/Controller/' . $this->className . 'Controller.class.php';
         if (!file_exists($controllerPath)) {
-            die($controllerPath . '文件不存在');
+            die($controllerPath . ' not exists');
         }
     }
 
